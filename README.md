@@ -99,4 +99,70 @@ Windows Server 2025        Windows 11 Client
      +-- Group Policy
      +-- Certificate Services
      +-- LAPS
+
+```
+A detailed network architecture diagram will be added as the project develops.
+---
+
+### 📚 Project Documentation
+
+Detailed implementation documentation will be organized into separate sections:
+
+- Proxmox Virtualization
+- pfSense Firewall
+- Windows Server 2025
+- Active Directory
+- DNS
+- DHCP
+- Group Policy
+- Microsoft LAPS
+- BitLocker
+- Sysmon
+- Windows Event Forwarding
+- Backup & Recovery
+- WireGuard VPN
+- Firewall & Networking Labs
+
+Each section will contain configuration steps, screenshots, troubleshooting notes, testing procedures, and lessons learned.
+
+---
+
+### 🎯 Project Goals
+
+The main goals of this HomeLab are to:
+
+- Develop practical System Administrator skills
+- Build and manage Windows enterprise infrastructure
+- Improve networking and firewall knowledge
+- Practice Active Directory administration
+- Implement enterprise security policies
+- Learn infrastructure monitoring and logging
+- Practice backup and disaster recovery
+- Develop PowerShell automation skills
+- Troubleshoot realistic infrastructure problems
+- Document technical projects professionally using GitHub
+
+---
+
+### 🚧 Project Status
+
+🟢 Active — Continuously Developing
+
+This repository will be updated as new technologies, configurations, security controls, automation scripts, and infrastructure services are added to the HomeLab.
+
+---
+### ⚠️ Security Notice
+
+All configurations and screenshots published in this repository are sanitized before publication.
+
+Passwords, private keys, certificates, authentication tokens, recovery keys, and other sensitive information are not included.
+
+---
+### 👤 Author
+
+Mohamed Afham
+
+IT Support Engineer | Aspiring System Administrator
+
+Focused on Windows Server, Active Directory, Microsoft technologies, virtualization, networking, infrastructure security, and automation.
      +-- Event Collection
