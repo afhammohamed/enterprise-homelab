@@ -245,8 +245,15 @@ This stage of the project demonstrates practical experience with:
 
 ## 📸 Screenshots
 
-Screenshots and architecture diagrams will be added to demonstrate the Proxmox configuration while ensuring that sensitive information is removed before publication.
+### Proxmox Node Summary
 
+The Proxmox VE node summary provides a centralized view of the virtualization host, including CPU utilization, memory usage, storage status, system load, kernel information, and active virtual machines.
+
+![Proxmox VE Node Summary](images/proxmox-node-summary.jpg)
+
+The primary Proxmox host is configured with an Intel Core i5 processor and approximately 32 GB of RAM. The environment currently hosts pfSense, Windows Server 2025, and Windows 11 virtual machines used throughout the HomeLab.
+
+This dashboard is also used to monitor host resource utilization and quickly verify the operational status of the virtual infrastructure.
 ---
 
 ⬅️ [Back to Enterprise HomeLab](../README.md)
