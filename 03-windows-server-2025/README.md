@@ -1,20 +1,41 @@
-# 🪟 Windows Server 2025
+# 🪟 Windows Server 2025 Enterprise HomeLab
 
 ## 📌 Overview
 
-Windows Server 2025 is used as the primary Windows server platform within my Enterprise HomeLab.
+Windows Server 2025 is used as the primary Windows infrastructure server within my Enterprise HomeLab.
 
-The server was deployed as a virtual machine on Proxmox VE and provides centralized Windows infrastructure services including identity, authentication, DNS, Group Policy, security management, monitoring, and backup/recovery functionality.
+The server was deployed as a virtual machine on **Proxmox VE** and provides centralized infrastructure services including:
+
+- Active Directory Domain Services (AD DS)
+- DNS Server
+- DHCP Server
+- Group Policy Management
+- Active Directory Certificate Services (AD CS)
+- Windows LAPS
+- Microsoft Defender security policies
+- Windows Defender Firewall policies
+- BitLocker policies
+- Credential Guard / Virtualization-Based Security
+- Advanced Audit Policy
+- Windows Event Forwarding (WEF)
+- Windows Event Collector (WEC)
+- Sysmon monitoring
+- Active Directory Recycle Bin
+- Windows Server Backup
 
 The Windows Server virtual machine is named:
 
-**SRV-DC01**
+```text
+SRV-DC01
+```
 
-The server was later promoted to a Domain Controller and now forms the core of the Windows Active Directory environment.
+It was promoted to a Domain Controller and now forms the core of the Windows Active Directory lab environment.
+
+The objective of this stage was not simply to install Windows Server, but to build an enterprise-style Windows infrastructure where identity, networking, security, monitoring, remote administration, and recovery technologies work together.
 
 ---
 
-## 🏗️ Server Architecture
+# 🏗️ 1. Server Architecture
 
 Windows Server 2025 is hosted as a virtual machine on the Proxmox VE virtualization platform.
 
@@ -23,36 +44,51 @@ The general infrastructure design is:
 ```text
 Internet
    │
+   ▼
 ISP Router
    │
+   ▼
 pfSense Firewall
    │
+   ├── Firewall
+   ├── NAT
+   ├── WireGuard VPN
+   ├── Dynamic DNS
+   └── DNS Integration
+   │
+   ▼
 HomeLab Network
    │
+   ▼
 Proxmox VE
    │
+   ├── pfSense VM
+   │
+   ├── Windows 11 Client
+   │
    └── SRV-DC01
-       │
-       ├── Windows Server 2025
-       ├── Active Directory Domain Services
-       ├── DNS Server
-       ├── DHCP Server
-       ├── Group Policy
-       ├── Active Directory Certificate Services
-       ├── Microsoft LAPS
-       ├── Windows Event Forwarding
-       └── Enterprise Security Policies
+          │
+          ├── Windows Server 2025
+          ├── Active Directory Domain Services
+          ├── DNS Server
+          ├── DHCP Server
+          ├── Group Policy
+          ├── Active Directory Certificate Services
+          ├── Windows LAPS
+          ├── Windows Event Collector
+          ├── Active Directory Recycle Bin
+          └── Windows Server Backup
 ```
 
-This architecture provides a realistic environment for practicing Windows Server administration while integrating virtualization, networking, security, monitoring, and remote-access technologies.
+This architecture provides a realistic environment for practicing Windows Server administration while integrating virtualization, networking, security, monitoring, endpoint management, and remote-access technologies.
 
 ---
 
-## 💻 Virtual Machine Configuration
+# 💻 2. Virtual Machine Configuration
 
 Windows Server 2025 was deployed as a dedicated virtual machine within Proxmox VE.
 
-### VM Details
+## VM Details
 
 | Setting | Configuration |
 |---|---|
@@ -70,353 +106,655 @@ Windows Server 2025 was deployed as a dedicated virtual machine within Proxmox V
 
 VirtIO drivers were installed to provide optimized virtual storage and network performance.
 
-The additional 50 GB virtual disk is used for Windows Server backup and recovery testing.
+The additional **50 GB virtual disk** is used for Windows Server backup and recovery testing.
 
 ---
 
-## 🌐 Network Configuration
+# 🖥️ 3. Windows Server Roles
+
+Windows Server 2025 was configured with the infrastructure roles required by the HomeLab.
+
+The Server Manager dashboard confirms the installation of major server roles including:
+
+- Active Directory Domain Services
+- Active Directory Certificate Services
+- DHCP Server
+- DNS Server
+- File and Storage Services
+
+![Windows Server Manager Dashboard](images/windows-server-dashboard.jpg)
+
+The server is therefore functioning as much more than a basic Windows VM and provides centralized services to the wider HomeLab.
+
+---
+
+# ⚙️ 4. Local Server Configuration
+
+The server hostname is:
+
+```text
+SRV-DC01
+```
+
+A static network configuration is used because the server provides critical infrastructure services such as Active Directory and DNS.
+
+Remote management and Remote Desktop were enabled for administrative access.
+
+Microsoft Defender Firewall and Microsoft Defender Antivirus remain enabled.
+
+![Windows Server Local Configuration](images/windows-server-local-server.jpg)
+
+The server can also be administered remotely through the protected WireGuard VPN rather than exposing Remote Desktop directly to the public Internet.
+
+---
+
+# 🌐 5. Network Configuration
 
 SRV-DC01 is connected to the internal HomeLab network through the Proxmox virtual networking infrastructure.
 
-The server uses a static network configuration because it provides critical infrastructure services including Active Directory and DNS.
-
-The general network path is:
+The general path is:
 
 ```text
 SRV-DC01
     │
+    ▼
 VirtIO Network Adapter
     │
+    ▼
 Proxmox Linux Bridge
     │
+    ▼
 pfSense
     │
+    ▼
 HomeLab Network
 ```
 
-This design allows pfSense to provide routing, firewalling, VPN connectivity, and network security while Windows Server provides centralized Windows infrastructure services.
+pfSense provides routing, firewalling, VPN connectivity and network security, while Windows Server provides centralized Windows infrastructure services.
 
 ---
 
-## 🧩 Server Roles & Features
-
-Windows Server 2025 was configured with several infrastructure roles and management components as the HomeLab developed.
-
-Key technologies implemented include:
-
-- Active Directory Domain Services (AD DS)
-- DNS Server
-- DHCP Server
-- Group Policy Management
-- Active Directory Certificate Services
-- Microsoft LAPS
-- Windows Server Backup
-- Windows Event Forwarding
-- Windows security and auditing policies
-
-Some technologies are documented separately within this repository to provide more detailed configuration, testing, and troubleshooting information.
-
----
-
-## 👥 Active Directory Domain Services
+# 👥 6. Active Directory Domain Services
 
 Active Directory Domain Services was installed on SRV-DC01.
 
-The server was subsequently promoted to a Domain Controller, creating centralized identity and authentication services for the HomeLab.
+The server was subsequently promoted to a Domain Controller.
 
-Active Directory is used to manage:
+The lab Active Directory domain is:
+
+```text
+afhamhomelab.local
+```
+
+Active Directory is used to centrally manage:
 
 - Domain users
 - Administrative accounts
-- Domain-joined computers
+- Domain computers
 - Organizational Units
 - Security groups
 - Group memberships
 - Authentication
 - Authorization
-- Enterprise security policies
+- Group Policy
+- Enterprise security configuration
 
-A Windows 11 client was successfully joined to the domain and is managed through the Windows Server Active Directory environment.
+A Windows 11 workstation was successfully joined to the Active Directory domain.
 
-Detailed Active Directory configuration is documented separately in the dedicated Active Directory section.
+The domain workstation is named:
+
+```text
+WIN11-CL01
+```
 
 ---
 
-## 🌐 DNS Server
+# 🗂️ 7. Active Directory Organizational Unit Structure
+
+A structured OU hierarchy was created to simulate an enterprise Active Directory environment.
+
+The environment contains organizational units including:
+
+```text
+Admin Accounts
+
+Afham-Computers
+ ├── Servers
+ └── Workstations
+      ├── Kiosk_Computers
+      └── No_Kiosk_Computers
+
+Afham-Groups
+
+Afham-ServiceAccounts
+
+Afham-Users
+ ├── Disabled Users
+ ├── Finance
+ ├── HR
+ ├── IT
+ └── Management
+```
+
+This design allows Group Policies and administrative controls to be targeted at specific users and computer categories rather than applying every configuration to the entire domain.
+
+The Windows 11 client **WIN11-CL01** was placed within the workstation OU structure.
+
+![Active Directory OU Structure](images/windows-server-active-directory-ou-structure.jpg)
+
+This provides practical experience with enterprise-style Active Directory organization and policy targeting.
+
+---
+
+# 🌐 8. DNS Server
 
 DNS was installed alongside Active Directory Domain Services.
 
-The DNS service provides internal name resolution for domain-joined systems and infrastructure resources.
+The Active Directory-integrated DNS zone is:
 
-DNS integration allows HomeLab systems to locate internal services using hostnames instead of relying exclusively on IP addresses.
+```text
+afhamhomelab.local
+```
 
-pfSense DNS Resolver configuration is also integrated with the Windows DNS infrastructure to provide name resolution across different parts of the HomeLab environment.
+DNS provides internal name resolution for domain-joined computers and infrastructure resources.
+
+Important infrastructure records include:
+
+```text
+srv-dc01
+WIN11-CL01
+pve01
+```
+
+This allows systems to locate internal resources by hostname instead of relying exclusively on IP addresses.
+
+![Windows Server DNS Zone](images/windows-server-dns-zone.jpg)
+
+DNS integration is particularly important for Active Directory because domain clients depend on DNS to locate Domain Controllers and domain services.
+
+pfSense DNS Resolver configuration is also integrated with the Windows DNS environment to provide name resolution between different areas of the HomeLab.
 
 ---
 
-## 📡 DHCP Server
+# 📡 9. DHCP Server
 
-The DHCP Server role was installed during the Windows Server implementation.
+The Windows Server DHCP role was installed and configured.
 
-DHCP responsibilities were tested between Windows Server and pfSense to understand how enterprise DHCP services interact with firewall-based DHCP services.
+A DHCP scope was created for the HomeLab network:
 
-During configuration and testing, care was taken to avoid operating multiple conflicting DHCP services on the same network.
+```text
+Network:
+10.10.10.0/24
 
-This provided practical experience with:
+DHCP Address Pool:
+10.10.10.100
+-
+10.10.10.200
+```
+
+![DHCP Address Pool](images/windows-server-dhcp-address-pool.jpg)
+
+DHCP configuration provided practical experience with:
 
 - DHCP installation
 - DHCP authorization
 - DHCP scopes
+- Address pools
 - IP address allocation
 - Default gateway configuration
 - DNS server assignment
-- Scope activation and deactivation
+- Scope activation/deactivation
 - DHCP troubleshooting
 
+DHCP responsibilities were also tested between Windows Server and pfSense.
+
+Care was taken during testing to prevent conflicting DHCP services from simultaneously serving the same network.
+
 ---
 
-## 🖥️ Remote Administration
+# 🔐 10. Group Policy Management
 
-Remote Desktop was enabled on Windows Server to allow SRV-DC01 to be administered remotely from authorized management systems.
+Group Policy is used to centrally configure and enforce Windows security and workstation settings across the domain.
 
-Remote administration is performed through the protected HomeLab network.
+Multiple enterprise-style Group Policy Objects were created and tested.
 
-Remote access to the infrastructure can also be established through the WireGuard VPN configured on pfSense.
-
-The general remote administration path is:
+Examples include:
 
 ```text
-Remote Device
-     │
-WireGuard VPN
-     │
-   pfSense
-     │
-HomeLab Network
-     │
-  SRV-DC01
+GPO-Workstation-Baseline
+
+GPO-20-Microsoft-Defender
+
+GPO-23-Windows-LAPS
+
+GPO-24-Local-Admin-Provisioning
+
+GPO-25-Windows-Firewall
+
+GPO-26-Advanced-Audit-Policy
+
+GPO-27-Windows-Event-Forwarding
+
+GPO-User-Corporate-Wallpaper
+
+MSFT-Windows11-25H2-Security-Baseline
+
+MSFT-Windows11-25H2-BitLocker
+
+MSFT-Windows11-25H2-Credential-Guard
+
+MSFT-Windows11-25H2-Defender-Antivirus
 ```
 
-This allows remote server administration without exposing Windows Remote Desktop directly to the public Internet.
+![Group Policy Management](images/windows-server-group-policy-management.jpg)
+
+This allows security configurations to be centrally controlled instead of manually configuring individual workstations.
+
+The implementation provided experience with:
+
+- GPO creation
+- GPO linking
+- OU targeting
+- Policy precedence
+- Computer configuration
+- User configuration
+- Security baselines
+- Policy troubleshooting
+- `gpupdate`
+- Group Policy Results
 
 ---
 
-## 🔐 Group Policy
+# 🔑 11. Windows LAPS
 
-Group Policy is used to centrally configure and enforce Windows settings across the domain environment.
+Windows Local Administrator Password Solution (LAPS) was configured within the Active Directory environment.
 
-Enterprise-style Group Policy Objects were created and tested for areas including:
+LAPS provides centralized management and automatic rotation of local administrator passwords on domain-joined Windows computers.
 
-- Windows Firewall
-- Password and account policies
-- Windows Defender
-- BitLocker
-- Audit policies
-- Remote Desktop
-- User Account Control
-- SMB security
-- Network security
-- Windows Event Forwarding
-- Endpoint security settings
+Configured LAPS policy areas include:
 
-Group Policy configuration is documented in greater detail in its dedicated project section.
+- Password backup directory
+- Password settings
+- Password encryption
+- Authorized password decryptors
+- Post-authentication actions
+- Managed administrator account
 
----
+A dedicated local administrator account named:
 
-## 🔑 Microsoft LAPS
+```text
+IronMan
+```
 
-Microsoft Local Administrator Password Solution (LAPS) was configured within the Active Directory environment.
+was provisioned for LAPS management within the lab.
 
-LAPS provides centralized management of local administrator credentials for domain-joined Windows computers.
+![Windows LAPS Configuration](images/windows-server-laps-local-admin.jpg)
 
-The implementation included testing of Windows LAPS Active Directory attributes and policy application.
+This demonstrates a more secure approach than deploying the same static local administrator password across multiple workstations.
 
-This provides practical experience with securing local administrator accounts in an enterprise-style Windows environment.
+The implementation also provided experience working with Windows LAPS Active Directory attributes and validating policy application.
 
 ---
 
-## 🔒 BitLocker
+# 🔒 12. BitLocker
 
-BitLocker policies were configured and tested through Group Policy.
+BitLocker security policies were configured through Group Policy.
 
-The Windows 11 domain client was used to validate BitLocker configuration and encryption behavior.
+The Windows 11 domain workstation was used to test BitLocker configuration and drive encryption behaviour.
 
-This provided practical experience with:
+Policy areas included:
 
 - Operating system drive encryption
 - TPM integration
-- Group Policy configuration
-- Recovery information
-- Encryption status verification
-- Enterprise endpoint security
+- Startup authentication
+- Recovery configuration
+- PIN-related configuration
+- Encryption requirements
+
+![BitLocker Group Policy](images/windows-server-bitlocker-gpo.jpg)
+
+This provided practical experience with centrally managing endpoint disk encryption in a domain environment.
 
 ---
 
-## 🛡️ Windows Firewall & Security Policies
+# 🛡️ 13. Microsoft Defender Antivirus
 
-Enterprise-style Windows Firewall policies were configured through Group Policy.
+Microsoft Defender Antivirus was centrally managed using Group Policy.
 
-Additional Windows security controls were also implemented and tested.
+The configuration included security controls for:
 
-These include:
+- Antivirus behaviour
+- Potentially unwanted applications
+- Remediation
+- Security intelligence
+- Local administrator visibility
+- Real-time protection
+- Endpoint protection settings
 
-- Windows Firewall policies
-- Windows Defender configuration
-- Password policies
-- Account lockout policies
-- Audit policies
-- UAC configuration
-- SMB hardening
-- Network security settings
-- TLS security settings
-- Remote access restrictions
-- Remote Assistance restrictions
-- Windows Event Logging
+![Microsoft Defender Antivirus GPO](images/windows-server-defender-antivirus-gpo.jpg)
 
-These configurations help simulate centralized security management commonly used within enterprise Windows environments.
+This demonstrates centralized endpoint security management using Active Directory Group Policy.
 
 ---
 
-## 📜 Active Directory Certificate Services
+# 🔐 14. Credential Guard & Virtualization-Based Security
 
-Active Directory Certificate Services was implemented within the HomeLab to gain practical experience with enterprise certificate infrastructure.
+Virtualization-Based Security was configured through Group Policy.
 
-During implementation, certificate authority communication and certificate trust issues were encountered and troubleshooted.
-
-This provided experience with:
-
-- Certificate Authority services
-- Enterprise certificate infrastructure
-- Certificate trust
-- Certificate troubleshooting
-- Windows domain integration
-
----
-
-## 📊 Sysmon Monitoring
-
-Sysmon was deployed to provide enhanced endpoint activity logging within the Windows environment.
-
-Sysmon provides additional visibility into system activity beyond standard Windows event logs.
-
-The implementation was used to generate and monitor security-relevant events within the HomeLab.
-
-This provides practical experience with endpoint monitoring and security telemetry.
-
----
-
-## 📡 Windows Event Forwarding
-
-Windows Event Forwarding was implemented to centralize selected Windows events from domain-joined systems.
-
-The general logging architecture is:
+The relevant policy is located under:
 
 ```text
-Windows 11 Client
-       │
-     Sysmon
-       │
-Windows Event Log
-       │
-Windows Event Forwarding
-       │
-    SRV-DC01
-       │
- Forwarded Events
+Computer Configuration
+    │
+    └── Administrative Templates
+          │
+          └── System
+                │
+                └── Device Guard
 ```
 
-A Windows Event Collector subscription was configured on the server.
+The policy:
 
-During initial testing, the **Forwarded Events** log did not receive events correctly.
+```text
+Turn On Virtualization Based Security
+```
 
-The configuration was investigated, recreated, and tested until the subscription became operational and events were successfully forwarded.
+was enabled.
 
-This provided practical troubleshooting experience with centralized Windows event collection.
+![Credential Guard GPO](images/windows-server-credential-guard-gpo.jpg)
+
+Credential Guard and VBS provide additional protection for Windows authentication credentials and security-sensitive processes.
+
+This provided practical experience working with modern Windows endpoint security controls.
 
 ---
 
-## 💾 Backup & Recovery
+# 🔥 15. Windows Defender Firewall
 
-A dedicated 50 GB virtual disk was attached to SRV-DC01 for Windows Server backup and recovery testing.
+Windows Defender Firewall was centrally configured through Group Policy.
 
-Windows Server Backup and the `wbadmin` command-line utility were used to perform and verify backup operations.
+Instead of disabling the firewall for administration, specific management traffic was allowed.
 
-The implementation included:
+Examples of configured rules include:
 
-- Dedicated backup storage
+```text
+Allow ICMPv4 Ping from Management
+
+Allow RDP from WireGuard
+
+Windows Remote Management (HTTP-In)
+```
+
+![Windows Firewall GPO](images/windows-server-firewall-gpo.jpg)
+
+This follows the principle of allowing required administrative traffic while keeping host firewall protection enabled.
+
+Remote administration can therefore be restricted to approved management paths.
+
+---
+
+# 📜 16. Advanced Audit Policy
+
+Advanced Windows auditing was configured through Group Policy to increase security visibility.
+
+Configured audit categories include:
+
+```text
+Account Management
+
+Detailed Tracking
+
+Logon / Logoff
+
+Policy Change
+```
+
+![Advanced Audit Policy](images/windows-server-advanced-audit-policy.jpg)
+
+Process creation auditing was enabled to generate security events such as:
+
+```text
+Event ID 4688
+A new process has been created
+```
+
+Authentication activity can also generate events such as:
+
+```text
+Event ID 4624
+An account was successfully logged on
+```
+
+These events provide valuable information for troubleshooting, monitoring, incident investigation, and centralized event collection.
+
+---
+
+# 📊 17. Sysmon Monitoring
+
+Microsoft Sysmon was deployed on the Windows 11 domain workstation to provide enhanced endpoint activity logging.
+
+Sysmon was installed under:
+
+```text
+C:\Tools\Sysmon\
+```
+
+A Sysmon XML configuration was used to control event collection.
+
+The Sysmon Operational log was successfully created and populated with events.
+
+Sysmon provides visibility into activities including:
+
+- Process creation
+- Process termination
+- File creation
+- Registry modifications
+- Network activity
+- Security-relevant endpoint behaviour
+
+The logs were verified under:
+
+```text
+Event Viewer
+    │
+    └── Applications and Services Logs
+          │
+          └── Microsoft
+                │
+                └── Windows
+                      │
+                      └── Sysmon
+                            │
+                            └── Operational
+```
+
+![Sysmon Operational Events](images/windows-sysmon-operational-events.jpg)
+
+The screenshot demonstrates active Sysmon event generation on the Windows endpoint.
+
+This provides significantly more endpoint telemetry than relying only on standard Windows logs.
+
+---
+
+# 📡 18. Windows Event Forwarding
+
+Windows Event Forwarding (WEF) was implemented to centrally collect selected Windows events from domain-joined computers.
+
+The architecture is:
+
+```text
+WIN11-CL01
+     │
+     ├── Windows Security Events
+     │
+     └── Sysmon
+             │
+             ▼
+       Windows Event Log
+             │
+             ▼
+ Windows Event Forwarding
+             │
+             ▼
+         SRV-DC01
+             │
+             ▼
+ Windows Event Collector
+             │
+             ▼
+      Forwarded Events
+```
+
+A Windows Event Collector subscription was configured on SRV-DC01.
+
+During initial implementation, the subscription experienced communication problems and forwarded events were not being received correctly.
+
+The issue was investigated and the subscription/configuration was recreated and tested.
+
+After troubleshooting, Windows events were successfully received by SRV-DC01.
+
+The Forwarded Events log contained events from:
+
+```text
+WIN11-CL01
+```
+
+including:
+
+```text
+Event ID 4688
+Process Creation
+```
+
+![Windows Event Forwarding](images/windows-server-wef-forwarded-events.jpg)
+
+This demonstrates both centralized event collection and practical troubleshooting of Windows Event Forwarding.
+
+---
+
+# 📜 19. Active Directory Certificate Services
+
+Active Directory Certificate Services was installed within the HomeLab to gain experience with enterprise Public Key Infrastructure.
+
+The implementation provided exposure to:
+
+- Certification Authority services
+- Enterprise certificates
+- Certificate trust
+- Windows domain integration
+- Certificate troubleshooting
+- PKI concepts
+
+During implementation, Certificate Authority communication and trust problems were encountered.
+
+These issues were investigated and corrected as part of the lab.
+
+This provided valuable troubleshooting experience beyond simply installing the AD CS role.
+
+---
+
+# ♻️ 20. Active Directory Recycle Bin
+
+Active Directory Recycle Bin was enabled for the lab forest.
+
+The Recycle Bin provides administrators with the ability to recover accidentally deleted Active Directory objects while preserving important object attributes.
+
+The **Deleted Objects** container is available within Active Directory Administrative Center.
+
+![Active Directory Recycle Bin](images/windows-server-ad-recycle-bin.jpg)
+
+This provides an additional recovery mechanism for Active Directory administration and allows object recovery scenarios to be practiced without immediately relying on full server backup restoration.
+
+---
+
+# 💾 21. Windows Server Backup
+
+A dedicated virtual disk was attached to SRV-DC01 for Windows Server backup and recovery testing.
+
+The backup disk capacity is:
+
+```text
+50 GB
+```
+
+Windows Server Backup and the `wbadmin` command-line utility were used during backup testing.
+
+The environment therefore contains separate:
+
+```text
+Primary OS Disk
+80 GB
+
+Backup Disk
+50 GB
+```
+
+Keeping backup storage separate from the operating system disk allows backup and recovery procedures to be tested without using the primary system volume as the destination.
+
+A manual Windows Server backup was successfully completed and verified.
+
+Windows Server Backup reported:
+
+```text
+Status:
+Successful
+
+Total Backups:
+1 copy
+```
+
+![Windows Server Backup](images/windows-server-backup-success.jpg)
+
+At the time of this documentation, the lab contains a **verified manual backup**.
+
+An automated backup schedule is not currently configured.
+
+The implementation provided experience with:
+
 - Windows Server Backup
 - `wbadmin`
+- Dedicated backup storage
 - Backup verification
 - Recovery testing
 - Restore procedures
 
-The backup disk is kept separate from the primary Windows Server operating system disk.
+---
 
-This allows backup and recovery procedures to be tested without using the primary system volume as the backup destination.
+# 🖥️ 22. Remote Administration
+
+Remote Desktop was enabled on Windows Server to allow SRV-DC01 to be administered remotely from authorized management systems.
+
+Remote administration is performed through the protected HomeLab environment.
+
+External remote access can be established using the WireGuard VPN configured on pfSense.
+
+The path is:
+
+```text
+Remote Device
+      │
+      ▼
+WireGuard VPN
+      │
+      ▼
+   pfSense
+      │
+      ▼
+HomeLab Network
+      │
+      ▼
+   SRV-DC01
+```
+
+This allows Windows Server administration without exposing Remote Desktop directly to the public Internet.
+
+Firewall policies also restrict management access to approved traffic.
 
 ---
 
-## ♻️ Active Directory Recycle Bin
+# 🔗 23. Integration with pfSense
 
-Active Directory Recycle Bin functionality was implemented and tested within the HomeLab environment.
-
-This provides the ability to recover accidentally deleted Active Directory objects while preserving important object attributes.
-
-Testing the Active Directory Recycle Bin provided practical experience with directory recovery and administrative troubleshooting.
-
----
-
-## 🧪 Testing & Validation
-
-The Windows Server environment was tested throughout the implementation process.
-
-Testing included:
-
-- Server network connectivity
-- DNS resolution
-- Domain authentication
-- Windows 11 domain joining
-- Group Policy processing
-- Remote Desktop connectivity
-- Microsoft LAPS functionality
-- BitLocker policy application
-- Windows Firewall policies
-- Sysmon logging
-- Windows Event Forwarding
-- Certificate Services
-- DHCP configuration
-- Server backup
-- Recovery procedures
-- Active Directory object recovery
-
-Testing was performed after major configuration changes to confirm that services were operating correctly.
-
----
-
-## 🔧 Troubleshooting Experience
-
-Several realistic troubleshooting scenarios were encountered while building the Windows Server environment.
-
-Examples included:
-
-- Domain connectivity problems
-- DNS resolution issues
-- Certificate Authority communication errors
-- Group Policy troubleshooting
-- Windows Event Forwarding configuration problems
-- Remote Desktop connectivity issues
-- DHCP configuration conflicts
-- LAPS configuration validation
-- Backup and recovery testing
-- Service startup and dependency issues
-
-Troubleshooting these issues provided practical experience beyond simply installing and configuring Windows Server roles.
-
----
-
-## 🔗 Integration with pfSense
-
-Windows Server operates behind the pfSense firewall within the HomeLab network.
+Windows Server operates behind the pfSense firewall.
 
 pfSense provides:
 
@@ -425,123 +763,445 @@ pfSense provides:
 - NAT
 - WireGuard VPN
 - Dynamic DNS
-- DNS forwarding and overrides
+- DNS Resolver
+- DNS forwarding/overrides
 - Remote-access connectivity
 
 Windows Server provides:
 
 - Active Directory
 - DNS
+- DHCP
 - Group Policy
 - Identity management
-- Certificate services
+- Certificate Services
 - Windows security policies
-- Centralized event collection
+- Windows Event Collection
+- Backup and recovery
 
-Together, these systems create a more realistic enterprise-style infrastructure environment.
+Together, these systems create an integrated enterprise-style infrastructure environment.
 
 ---
 
-## 🔗 Integration with Windows 11
+# 🔗 24. Integration with Windows 11
 
 A Windows 11 virtual machine was deployed within Proxmox and joined to the Active Directory domain.
 
-The Windows 11 client is used to test:
+The workstation is:
+
+```text
+WIN11-CL01
+```
+
+The client is used to test:
 
 - Domain authentication
+- Active Directory computer management
+- DNS
 - Group Policy
-- Microsoft LAPS
+- Windows LAPS
 - BitLocker
+- Microsoft Defender
+- Credential Guard
 - Windows Firewall
+- Advanced auditing
 - Sysmon
 - Windows Event Forwarding
-- DNS
 - Remote administration
 - Enterprise security policies
 
-This provides a client/server environment for testing centralized Windows administration.
+This provides a realistic client/server environment for testing centralized Windows administration.
 
 ---
 
-## 📸 Screenshots
+# 🧪 25. Testing & Validation
 
-Screenshots will be added to demonstrate the Windows Server 2025 configuration while ensuring that sensitive information is removed before publication.
+The Windows Server environment was tested throughout implementation.
 
-Recommended screenshots include:
+Testing included:
+
+- Server network connectivity
+- DNS resolution
+- Domain authentication
+- Windows 11 domain joining
+- Active Directory OU placement
+- Group Policy processing
+- Remote Desktop connectivity
+- Windows LAPS functionality
+- BitLocker policy application
+- Microsoft Defender policies
+- Credential Guard / VBS
+- Windows Firewall policies
+- Advanced Audit Policy
+- Sysmon logging
+- Windows Event Forwarding
+- Certificate Services
+- DHCP configuration
+- Windows Server Backup
+- Recovery procedures
+- Active Directory object recovery
+
+Testing was performed after major configuration changes to verify that services were operating correctly.
+
+---
+
+# 🔧 26. Troubleshooting Experience
+
+Several realistic troubleshooting scenarios were encountered while building the Windows Server environment.
+
+These included:
+
+- Domain connectivity problems
+- DNS resolution issues
+- Certificate Authority communication errors
+- Certificate trust problems
+- Group Policy troubleshooting
+- Windows Event Forwarding communication failures
+- Sysmon installation verification
+- Missing Sysmon service/logging
+- Remote Desktop connectivity issues
+- DHCP configuration conflicts
+- LAPS configuration validation
+- Backup and recovery testing
+- Windows service startup/dependency issues
+
+One particularly useful troubleshooting exercise involved Windows Event Forwarding.
+
+The initial WEF subscription produced communication errors and did not correctly populate the Forwarded Events log.
+
+The configuration was investigated, recreated and retested until events from WIN11-CL01 successfully appeared on SRV-DC01.
+
+Sysmon also required verification and installation before the Sysmon Operational log became available.
+
+Troubleshooting these issues provided practical experience beyond simply installing Windows Server roles.
+
+---
+
+# 🛡️ 27. Security Architecture
+
+The Windows environment now uses multiple layers of security.
+
+```text
+                     Internet
+                        │
+                        ▼
+                     pfSense
+                        │
+             Firewall / WireGuard
+                        │
+                        ▼
+                  Internal LAN
+                        │
+             ┌──────────┴──────────┐
+             │                     │
+             ▼                     ▼
+         SRV-DC01              WIN11-CL01
+             │                     │
+             │                     ├── BitLocker
+             │                     ├── Defender
+             │                     ├── Credential Guard
+             │                     ├── Windows Firewall
+             │                     ├── LAPS
+             │                     ├── Audit Policies
+             │                     └── Sysmon
+             │
+             ├── Active Directory
+             ├── DNS
+             ├── DHCP
+             ├── Group Policy
+             ├── Certificate Services
+             ├── Windows Event Collector
+             ├── AD Recycle Bin
+             └── Windows Server Backup
+```
+
+This design combines network security, identity security, endpoint protection, centralized management, monitoring, and recovery.
+
+---
+
+# 📸 28. Configuration Evidence
+
+The repository contains screenshots documenting the major Windows Server technologies implemented during this stage.
+
+## Server Infrastructure
 
 - Windows Server Manager Dashboard
 - Local Server configuration
-- Installed Roles and Features
-- Active Directory Domain Services
-- DNS Manager
-- DHCP Manager
-- Group Policy Management
-- Windows Event Viewer
-- Windows Event Forwarding
-- Microsoft LAPS
-- Windows Server Backup
-- Active Directory Recycle Bin
-- Proxmox SRV-DC01 VM configuration
+- Installed infrastructure roles
 
-> **Security Notice:** IP addresses, usernames, domain information, passwords, certificates, recovery keys, authentication information, and other sensitive infrastructure details should be sanitized where appropriate before screenshots are published.
+## Active Directory
+
+- Active Directory OU structure
+- Domain-joined Windows 11 workstation
+- Active Directory Recycle Bin
+
+## Network Services
+
+- Windows DNS zone
+- DHCP address pool
+
+## Group Policy & Endpoint Security
+
+- Group Policy Management
+- Windows LAPS
+- Local administrator provisioning
+- BitLocker policy
+- Microsoft Defender Antivirus policy
+- Credential Guard / VBS
+- Windows Defender Firewall
+- Advanced Audit Policy
+
+## Monitoring
+
+- Sysmon Operational events
+- Windows Event Forwarding
+- Forwarded security events
+
+## Backup & Recovery
+
+- Successful Windows Server Backup
+- Active Directory Recycle Bin
+
+> **Security Notice:** Public screenshots are sanitized where appropriate. Passwords, private keys, recovery keys, authentication information, certificates, public-facing addressing information, and other sensitive infrastructure information should not be exposed in this repository.
 
 ---
 
-## 🧠 Skills Demonstrated
+# 🧠 29. Skills Demonstrated
 
 This stage demonstrates practical experience with:
 
-- Windows Server 2025 administration
-- Windows Server deployment
-- Proxmox virtualization
+### Windows Server Administration
+
+- Windows Server 2025
+- Server Manager
+- Windows Server roles and features
+- Remote administration
+- Windows service troubleshooting
+
+### Virtualization
+
+- Proxmox VE
+- KVM/QEMU
+- VirtIO
+- Virtual disk management
+- Virtual networking
+
+### Identity & Access Management
+
 - Active Directory Domain Services
+- Domain Controller deployment
+- Organizational Units
+- Domain users
+- Domain computers
+- Security groups
+- Administrative accounts
+- Windows LAPS
+
+### Network Services
+
 - DNS
 - DHCP
-- Group Policy
-- Microsoft LAPS
-- BitLocker
-- Windows Firewall
-- Active Directory Certificate Services
-- Sysmon
-- Windows Event Forwarding
-- Windows Server Backup
-- Active Directory recovery
-- Remote administration
-- Enterprise security configuration
-- Infrastructure troubleshooting
-- Windows client/server integration
+- Static addressing
+- Internal name resolution
 - pfSense integration
-- Backup and disaster recovery
 
----
+### Group Policy
 
-## 🎯 Key Learning Outcomes
+- GPO creation
+- GPO linking
+- OU targeting
+- Microsoft security baselines
+- Endpoint policy management
+- Group Policy troubleshooting
 
-Through this stage of the HomeLab, I gained practical experience deploying and administering a Windows Server environment rather than only studying Windows Server technologies theoretically.
+### Endpoint Security
 
-The environment allowed me to practice how multiple enterprise technologies work together, including virtualization, networking, identity management, DNS, Group Policy, endpoint security, centralized logging, remote access, backup, and disaster recovery.
+- Microsoft Defender Antivirus
+- Windows Defender Firewall
+- BitLocker
+- Credential Guard
+- Virtualization-Based Security
+- Local administrator management
 
-It also provided hands-on troubleshooting experience with real configuration problems and helped develop a structured approach to diagnosing infrastructure issues.
+### Security Monitoring
 
----
+- Advanced Audit Policy
+- Windows Event Viewer
+- Windows Event Forwarding
+- Windows Event Collector
+- Sysmon
+- Event ID analysis
+- Centralized logging
 
-## ➡️ Next Stage
+### PKI
 
-The next stage documents:
+- Active Directory Certificate Services
+- Certificate Authority
+- Certificate trust
+- PKI troubleshooting
 
-**Active Directory Domain Services (AD DS)**
+### Backup & Recovery
 
-The Active Directory section will cover:
-
-- Domain Controller configuration
-- Domain structure
-- Organizational Units
-- Users
-- Groups
-- Computers
-- Administrative accounts
-- Domain security
+- Windows Server Backup
+- `wbadmin`
+- Dedicated backup storage
+- Backup verification
+- Restore testing
 - Active Directory Recycle Bin
-- Testing and troubleshooting
+
+### Troubleshooting
+
+- DNS troubleshooting
+- DHCP troubleshooting
+- Domain connectivity
+- Group Policy
+- WEF
+- Sysmon
+- Certificate Services
+- Remote administration
+- Backup and recovery
 
 ---
+
+# 📊 30. Current Environment Status
+
+| Component | Status |
+|---|---|
+| Windows Server 2025 | ✅ Operational |
+| SRV-DC01 | ✅ Operational |
+| Domain Controller | ✅ Operational |
+| Active Directory | ✅ Operational |
+| Windows 11 Domain Client | ✅ Joined |
+| DNS Server | ✅ Operational |
+| DHCP Server | ✅ Configured |
+| Group Policy | ✅ Operational |
+| Windows LAPS | ✅ Configured |
+| Local Admin Provisioning | ✅ Configured |
+| BitLocker Policy | ✅ Configured |
+| Microsoft Defender Policy | ✅ Configured |
+| Credential Guard / VBS | ✅ Configured |
+| Windows Defender Firewall GPO | ✅ Configured |
+| Advanced Audit Policy | ✅ Configured |
+| Sysmon | ✅ Operational |
+| Windows Event Forwarding | ✅ Verified |
+| Windows Event Collector | ✅ Receiving Events |
+| Active Directory Certificate Services | ✅ Configured |
+| Active Directory Recycle Bin | ✅ Enabled |
+| Windows Server Backup | ✅ Manual Backup Verified |
+| Automated Server Backup | ⏳ Not Configured |
+
+---
+
+# 🎯 31. Key Learning Outcomes
+
+Through this stage of the Enterprise HomeLab, I gained practical experience deploying and administering a Windows Server environment rather than only studying Windows Server technologies theoretically.
+
+The environment provided hands-on experience integrating:
+
+```text
+Virtualization
+      │
+      ▼
+Networking
+      │
+      ▼
+Active Directory
+      │
+      ▼
+DNS / DHCP
+      │
+      ▼
+Group Policy
+      │
+      ▼
+Endpoint Security
+      │
+      ▼
+Monitoring
+      │
+      ▼
+Backup & Recovery
+```
+
+The project also provided practical troubleshooting experience with real configuration problems.
+
+Instead of simply following installation procedures, problems were diagnosed, configurations were corrected, and functionality was verified.
+
+Important learning areas included:
+
+- Designing Active Directory structure
+- Managing Windows clients centrally
+- Implementing security baselines
+- Protecting local administrator credentials
+- Managing endpoint firewall policies
+- Configuring disk encryption policies
+- Implementing centralized Windows auditing
+- Deploying Sysmon
+- Collecting events centrally with WEF
+- Managing internal DNS
+- Configuring DHCP
+- Implementing server backup
+- Recovering Active Directory objects
+- Troubleshooting interconnected infrastructure services
+
+---
+
+# 🏆 32. Stage Outcome
+
+The Windows Server 2025 environment has progressed from a basic server installation into an integrated enterprise-style Windows infrastructure lab.
+
+The completed environment provides:
+
+**Identity**
+
+Active Directory Domain Services provides centralized authentication and identity management.
+
+**Networking**
+
+DNS and DHCP provide core Windows network services.
+
+**Management**
+
+Group Policy provides centralized configuration of domain computers.
+
+**Endpoint Security**
+
+Windows LAPS, BitLocker, Microsoft Defender, Credential Guard and Windows Firewall provide layered endpoint protection.
+
+**Auditing & Monitoring**
+
+Advanced Audit Policy, Sysmon, Windows Event Forwarding and Windows Event Collector provide centralized security visibility.
+
+**Recovery**
+
+Active Directory Recycle Bin and Windows Server Backup provide recovery capabilities.
+
+**Remote Administration**
+
+pfSense and WireGuard provide protected remote connectivity to the environment.
+
+The result is a HomeLab that demonstrates practical experience across multiple technologies commonly encountered in Windows System Administrator and Infrastructure Administrator roles.
+
+---
+
+# ➡️ 33. Next Stage
+
+The next stage of the Enterprise HomeLab will document Active Directory in greater depth.
+
+Planned topics include:
+
+- Domain architecture
+- Domain Controller configuration
+- Organizational Unit design
+- User management
+- Group management
+- Computer management
+- Administrative accounts
+- Service accounts
+- Delegation
+- Active Directory security
+- Active Directory Recycle Bin
+- Testing
+- Troubleshooting
+
+The goal is to continue expanding the repository into a structured technical portfolio demonstrating practical enterprise infrastructure administration.
