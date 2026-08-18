@@ -118,9 +118,9 @@ Detailed implementation documentation is organized into separate sections.
 Completed sections are linked below, with additional documentation being added as the HomeLab develops.
 
 1. [Proxmox Virtualization](01-proxmox/README.md) ✅
-2. pfSense Firewall
-3. Windows Server 2025
-4. Active Directory
+2. [pfSense Firewall](02-pfsense/README.md) ✅ 
+3. [Windows Server 2025](03-windows-server-2025) ✅ 
+4. [Active Directory](04-active-directory) ✅ 
 5. DNS
 6. DHCP
 7. Group Policy
