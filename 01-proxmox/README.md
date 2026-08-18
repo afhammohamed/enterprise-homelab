@@ -269,6 +269,20 @@ The current network configuration includes:
 
 This configuration allows pfSense to provide firewall and routing services for the internal HomeLab network while Proxmox manages the underlying virtual networking infrastructure.
 
+### Storage Configuration Overview
+
+The Proxmox environment uses separate storage locations for virtual machine workloads, installation media, and infrastructure backups.
+
+![Proxmox Storage Configuration](images/proxmox-storage-configuration.jpg)
+
+The current storage configuration includes:
+
+- **local** — Directory storage used for ISO images, container templates, backups, and other Proxmox content.
+- **local-lvm** — LVM-Thin storage primarily used for virtual machine and container disks.
+- **HDD500** — Additional dedicated storage configured on the 500 GB SATA HDD for backups and other HomeLab storage requirements.
+
+Separating backup storage from the primary virtual machine storage provides additional flexibility when performing backup, restore, and disaster recovery exercises.
+
 ---
 
 ⬅️ [Back to Enterprise HomeLab](../README.md)
