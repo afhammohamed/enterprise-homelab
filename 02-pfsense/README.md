@@ -506,11 +506,101 @@ Public documentation does not include:
 
 ## 📸 Screenshots
 
-Screenshots documenting the pfSense implementation will be stored in:
+### pfSense Dashboard
 
-```text
-02-pfsense/images/
-```
+The pfSense dashboard provides an overview of the firewall appliance, system status, interfaces, and resource utilization.
+
+![pfSense Dashboard](images/pfsense-dashboard.jpg)
+
+---
+
+### Interface Assignments
+
+WAN and LAN interfaces are assigned to separate virtual network interfaces, allowing pfSense to route and control traffic between the external and internal HomeLab networks.
+
+![pfSense Interface Assignments](images/pfsense-interface-assignments.jpg)
+
+---
+
+### WAN Firewall Rules
+
+WAN firewall rules control inbound traffic from the external network. A dedicated rule permits WireGuard VPN traffic while unsolicited inbound traffic remains restricted.
+
+![pfSense WAN Firewall Rules](images/pfsense-wan-firewall-rules.jpg)
+
+---
+
+### LAN Firewall Rules
+
+LAN firewall policies were created and tested to practice traffic filtering, management access restrictions, scheduled rules, HTTP/HTTPS filtering, ICMP blocking, and rule-order behavior.
+
+![pfSense LAN Firewall Rules](images/pfsense-lan-firewall-rules.jpg)
+
+---
+
+### Firewall Aliases
+
+Firewall aliases were created to logically group clients, servers, management systems, and lab networks. This simplifies firewall rule management and improves readability.
+
+![pfSense Firewall Aliases](images/pfsense-firewall-aliases.jpg)
+
+---
+
+### WireGuard VPN Tunnel
+
+WireGuard was configured on pfSense to provide secure remote access to the HomeLab infrastructure.
+
+![pfSense WireGuard Tunnel](images/pfsense-wireguard-tunnel.jpg)
+
+---
+
+### WireGuard VPN Peers
+
+Multiple WireGuard peers were configured to provide remote connectivity from authorized client devices such as a Windows management system and mobile device.
+
+Sensitive public keys and addressing information have been removed from the published screenshot.
+
+![pfSense WireGuard Peers](images/pfsense-wireguard-peers.jpg)
+
+---
+
+### WireGuard VPN Status
+
+The WireGuard status page verifies that the VPN tunnel is operational and exchanging traffic with configured peers.
+
+![pfSense WireGuard Status](images/pfsense-wireguard-status.jpg)
+
+---
+
+### Dynamic DNS
+
+Dynamic DNS was configured using No-IP so the HomeLab can maintain a consistent hostname even when the public WAN IP address changes.
+
+Sensitive hostname and public IP information have been removed from the screenshot.
+
+![pfSense Dynamic DNS](images/pfsense-dynamic-dns.jpg)
+
+---
+
+### DNS Resolver Overrides
+
+DNS Resolver host and domain overrides were configured to support internal name resolution for HomeLab infrastructure.
+
+This allows internal services such as Proxmox and Active Directory resources to be accessed using DNS names rather than relying exclusively on IP addresses.
+
+![pfSense DNS Overrides](images/pfsense-dns-overrides.jpg)
+
+---
+
+### Outbound NAT
+
+Hybrid Outbound NAT was configured to combine automatically generated NAT rules with custom mappings required by the lab.
+
+A custom outbound NAT rule was implemented as part of the WireGuard and Proxmox remote-access configuration.
+
+![pfSense Outbound NAT](images/pfsense-outbound-nat.jpg)
+
+---
 
 Planned screenshots include:
 
