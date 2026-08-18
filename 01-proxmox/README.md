@@ -254,6 +254,21 @@ The Proxmox VE node summary provides a centralized view of the virtualization ho
 The primary Proxmox host is configured with an Intel Core i5 processor and approximately 32 GB of RAM. The environment currently hosts pfSense, Windows Server 2025, and Windows 11 virtual machines used throughout the HomeLab.
 
 This dashboard is also used to monitor host resource utilization and quickly verify the operational status of the virtual infrastructure.
+
+### Network Bridge Configuration
+
+The Proxmox host uses Linux bridges to provide network connectivity between the physical network interface and virtual machines.
+
+![Proxmox Network Configuration](images/proxmox-network-configuration.jpg)
+
+The current network configuration includes:
+
+- **nic0** — Physical network interface
+- **vmbr0** — Primary Linux bridge connected to the physical `nic0` interface
+- **vmbr1** — Dedicated virtual bridge used for the pfSense LAN network
+
+This configuration allows pfSense to provide firewall and routing services for the internal HomeLab network while Proxmox manages the underlying virtual networking infrastructure.
+
 ---
 
 ⬅️ [Back to Enterprise HomeLab](../README.md)
