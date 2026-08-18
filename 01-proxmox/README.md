@@ -283,6 +283,30 @@ The current storage configuration includes:
 
 Separating backup storage from the primary virtual machine storage provides additional flexibility when performing backup, restore, and disaster recovery exercises.
 
+### Windows Server 2025 VM Configuration
+
+Windows Server 2025 is deployed as a virtual machine on the Proxmox VE host and is used as the primary server for the HomeLab environment.
+
+![Windows Server 2025 VM Hardware](images/windows-server-vm-hardware.jpg)
+
+The virtual machine is configured with:
+
+- **Memory:** 8 GB RAM
+- **Processors:** 4 virtual CPU cores
+- **BIOS:** OVMF (UEFI)
+- **Machine Type:** Q35
+- **SCSI Controller:** VirtIO SCSI Single
+- **Primary Disk:** 80 GB
+- **Additional Disk:** 50 GB
+- **Network Adapter:** VirtIO
+- **Network Bridge:** `vmbr1`
+- **EFI Disk:** Enabled
+- **TPM:** Version 2.0
+
+The additional 50 GB virtual disk is stored on the dedicated `HDD500` storage and is used for backup and recovery exercises.
+
+VirtIO devices are used to provide optimized virtualized storage and network performance within the Proxmox environment.
+
 ---
 
 ⬅️ [Back to Enterprise HomeLab](../README.md)
