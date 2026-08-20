@@ -1,12 +1,14 @@
 # 🏠 Enterprise HomeLab
 
-> A hands-on enterprise-style HomeLab built to develop practical skills in **IT infrastructure, Virtualization, Networking, Security, Linux, Monitoring, and Automation**.
+> A hands-on enterprise-style HomeLab built to develop practical skills in IT infrastructure, virtualization, networking, security, Linux, monitoring, and automation.
 
 ---
 
 ## 👋 About This Project
 
-This repository documents my personal **Enterprise HomeLab**, built as a practical environment for hands-on learning, experimentation, and development across IT infrastructure, virtualization, networking, operating systems, security, monitoring, and automation.
+This repository documents my personal Enterprise HomeLab, built for hands-on learning, experimentation, troubleshooting, and infrastructure development.
+
+Rather than simply installing technologies, I use the environment to deploy services, apply security controls, test configurations, troubleshoot failures, perform recovery exercises, automate administrative tasks, and document what I learn.
 
 The goal is not simply to install different technologies.
 
@@ -28,7 +30,7 @@ The HomeLab is continuously expanding as I develop my skills across **Windows, L
 
 # 🎯 My Goal
 
-My goal is to build a small but realistic enterprise infrastructure where I can practice the responsibilities of a **System Administrator**.
+My goal is to build a small but realistic enterprise-style infrastructure where I can develop practical skills across systems, networking, security, virtualization, automation, and infrastructure operations.
 
 The learning process follows:
 
@@ -52,7 +54,7 @@ Document
 Improve
 ```
 
-Problems encountered during the project are intentionally documented because troubleshooting is an important part of real-world infrastructure administration.
+Troubleshooting and recovery are intentionally documented because diagnosing failures is a key part of infrastructure administration.
 
 ---
 
@@ -63,44 +65,49 @@ My lab currently uses:
 | Hardware               | Purpose                               |
 | ---------------------- | ------------------------------------- |
 | Lenovo M720t           | Primary Proxmox virtualization server |
-| Lenovo M910q           | Additional HomeLab node               |
-| Lenovo M910q           | Additional HomeLab node               |
+| Lenovo M910q x 2       | Available for multi-node / cluster expansion               |
 | Managed Switch         | Network connectivity                  |
 | Additional HDD Storage | Backup and storage                    |
 
 ### Current Architecture
 
 ```text
-                        Internet
-                           │
-                      ISP Router
-                           │
-                    Managed Switch
-                           │
-              ┌────────────┼────────────┐
-              │            │            │
-         Proxmox-01    Proxmox-02    Proxmox-03
-              │
-           pfSense
-           Firewall
-              │
-          Lab Network
-              │
-       ┌──────┴───────┐
-       │              │
-Windows Server     Windows 11
-     2025             Client
-       │
-       ├── Active Directory
-       ├── DNS
-       ├── DHCP
-       ├── Group Policy
-       ├── Microsoft LAPS
-       ├── BitLocker
-       ├── Windows Security
-       ├── Sysmon
-       ├── Event Forwarding
-       └── Backup & Recovery
+
+                         Internet
+                            │
+                        ISP Router
+                            │
+                     Physical Network
+                            │
+                       Proxmox-01
+                  ┌─────────┴─────────┐
+                  │                   │
+                vmbr0               pfSense
+                                      │
+                                    vmbr1
+                                      │
+                              Internal Lab Network
+                                10.10.10.0/24
+                               ┌───────┴────────────────────────────┐
+                               │                                    │
+                          Windows Server                        Windows 11
+                            SRV-DC01                            WIN11-CL01
+                             │
+                             ├── Active Directory
+                             ├── DNS
+                             ├── DHCP
+                             ├── Group Policy
+                             ├── Microsoft LAPS
+                             ├── BitLocker
+                             ├── Windows Security
+                             ├── Sysmon
+                             ├── Event Forwarding
+                             └── Backup & Recovery
+
+Future Proxmox Expansion
+├── Proxmox-02
+└── Proxmox-03                        
+
 ```
 
 This architecture will continue to expand with Linux servers, containers, storage, monitoring, SIEM, automation, and other enterprise technologies.
@@ -160,19 +167,16 @@ Deployed Windows Server 2025 and configured the main Windows infrastructure serv
 
 Covered:
 
-* Windows Server deployment
-* DNS
-* DHCP
-* Group Policy
-* Certificate Services
-* Microsoft LAPS
-* BitLocker
-* Windows Defender
-* Windows Firewall
-* Sysmon
-* Windows Event Forwarding
-* Windows Server Backup
-* Remote administration
+- Windows Server 2025 deployment
+- DNS and DHCP
+- Group Policy
+- Active Directory Certificate Services
+- Microsoft LAPS
+- BitLocker and Windows security policies
+- Sysmon and Windows Event Forwarding
+- Windows Server Backup
+- Remote administration
+- Troubleshooting and recovery
 
 ➡️ **[View Windows Server 2025 Documentation](./03-windows-server-2025/)**
 
@@ -246,7 +250,7 @@ After Linux Administration, the HomeLab will continue expanding into:
 | 02    | pfSense Firewall           | ✅ Completed |
 | 03    | Windows Server 2025        | ✅ Completed |
 | 04    | Active Directory           | ✅ Completed |
-| 05    | Linux Administration       | 🚧 Next     |
+| 05    | Linux Administration       | 🚧 In Progress     |
 | 06    | Docker & Containers        | 🔜 Planned  |
 | 07    | Storage & File Services    | 🔜 Planned  |
 | 08    | Monitoring & Observability | 🔜 Planned  |
@@ -297,62 +301,13 @@ The objective is to understand how different infrastructure technologies work **
 
 This project provides hands-on experience with:
 
-**Virtualization**
-
-* Proxmox VE
-* Virtual machines
-* Virtual networking
-* Storage and backups
-
-**Windows Administration**
-
-* Windows Server 2025
-* Windows 11
-* Active Directory
-* DNS
-* DHCP
-* Group Policy
-* PowerShell
-
-**Networking**
-
-* pfSense
-* Firewall policies
-* NAT
-* VPN
-* WireGuard
-* DNS
-* Network troubleshooting
-
-**Security**
-
-* Microsoft LAPS
-* BitLocker
-* Windows Defender
-* Windows Firewall
-* Security auditing
-* Sysmon
-* Windows Event Forwarding
-
-**Linux**
-
-* Linux server administration
-* Networking
-* SSH
-* Permissions
-* Services
-* Security
-* Bash
-
-**Future Skills**
-
-* Docker
-* SIEM
-* Monitoring
-* NAS and storage
-* Infrastructure automation
-* Disaster recovery
-* High availability
+| Area           | Technologies                                           |
+| -------------- | ------------------------------------------------------ |
+| Virtualization | Proxmox VE, VMs, Linux Bridges, storage                |
+| Windows        | Windows Server 2025, Windows 11, AD DS, DNS, DHCP, GPO |
+| Networking     | pfSense, NAT, WireGuard, DNS, firewall rules           |
+| Security       | LAPS, BitLocker, Sysmon, WEF, Windows Firewall         |
+| Automation     | PowerShell, Bash *(expanding)*                         |
 
 ---
 
@@ -382,30 +337,11 @@ enterprise-homelab/
 
 # 🔐 Security Notice
 
-This repository documents a personal HomeLab created for educational and portfolio purposes.
+This repository is intended for educational and portfolio purposes.
 
-Sensitive information is not intentionally published.
+Sensitive information such as passwords, private keys, VPN credentials, recovery keys, certificates, tokens and administrative credentials is excluded or replaced with placeholders.
 
-This includes:
-
-* Passwords
-* Private keys
-* VPN keys
-* Authentication tokens
-* API keys
-* BitLocker recovery keys
-* Certificates
-* Administrative credentials
-
-Sensitive values shown in documentation are replaced with placeholders such as:
-
-```text
-Password   = <REDACTED>
-PrivateKey = <REDACTED>
-Token      = <REDACTED>
-```
-
-Remote access to the HomeLab is provided through secure VPN connectivity rather than intentionally exposing internal management interfaces directly to the Internet.
+Internal addresses and hostnames shown in the documentation belong only to the isolated HomeLab environment.
 
 ---
 
@@ -440,11 +376,7 @@ Remote access to the HomeLab is provided through secure VPN connectivity rather 
 
 **Mohamed Afham**
 
-Building and documenting hands-on enterprise infrastructure across:
-
-**Windows • Linux • Active Directory • Proxmox • pfSense • Networking • Security • Monitoring • Automation**
-
-This repository represents continuous hands-on learning, experimentation, troubleshooting, and infrastructure development.
+This repository documents my ongoing hands-on infrastructure learning and HomeLab development.
 
 ---
 
