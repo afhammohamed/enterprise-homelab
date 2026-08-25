@@ -69,48 +69,11 @@ My lab currently uses:
 | Managed Switch         | Network connectivity                  |
 | Additional HDD Storage | Backup and storage                    |
 
-### Current Architecture
+## 🏗️ Current Architecture
 
-```text
+The diagram below represents the current architecture of my Enterprise HomeLab, including Proxmox VE, pfSense, Windows Server 2025, Active Directory services, WireGuard VPN, DDNS, security controls, monitoring, and backup components.
 
-                         Internet
-                            │
-                        ISP Router
-                            │
-                     Physical Network
-                            │
-                       Proxmox-01
-                  ┌─────────┴─────────┐
-                  │                   │
-                vmbr0               pfSense
-                                      │
-                                    vmbr1
-                                      │
-                              Internal Lab Network
-                                10.10.10.0/24
-                               ┌───────┴────────────────────────────┐
-                               │                                    │
-                          Windows Server                        Windows 11
-                            SRV-DC01                            WIN11-CL01
-                             │
-                             ├── Active Directory
-                             ├── DNS
-                             ├── DHCP
-                             ├── Group Policy
-                             ├── Microsoft LAPS
-                             ├── BitLocker
-                             ├── Windows Security
-                             ├── Sysmon
-                             ├── Event Forwarding
-                             └── Backup & Recovery
-
-Future Proxmox Expansion
-├── Proxmox-02
-└── Proxmox-03                        
-
-```
-
-This architecture will continue to expand with Linux servers, containers, storage, monitoring, SIEM, automation, and other enterprise technologies.
+![Enterprise HomeLab Current Architecture](docs/architecture/enterprise-homelab-current-architecture.png)
 
 ---
 
