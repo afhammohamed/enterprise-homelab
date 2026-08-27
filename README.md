@@ -171,56 +171,80 @@ Covered:
 
 ---
 
+## 🐧 05 — Linux Administration ✅
+
+Deployed an Ubuntu Linux system and integrated it into the existing Windows-based HomeLab infrastructure.
+
+### Implemented
+
+- Linux networking and internal DNS
+- Users, groups and filesystem permissions
+- sudo and least-privilege administration
+- APT package management
+- systemd service management
+- SSH remote administration
+- Ed25519 key-based authentication
+- SSH security hardening
+- LVM storage administration
+- Linux logging with journalctl
+- Bash scripting and cron automation
+- UFW host firewall
+- Samba / SMB file sharing
+- Windows-to-Linux interoperability
+- Active Directory domain integration
+- SSSD and Kerberos authentication
+- AD group-based Linux login
+- AD-controlled sudo authorization
+
+**Key outcome:** Linux authentication and administrative access can be centrally controlled through Active Directory security groups.
+
+➡️ [View Linux Administration Documentation](05-Linux%20Administration/README.md)
+
+---
+
 # 🚧 What I'm Working On Now
 
-## 05 — Linux Administration 🐧
+## 06 — Monitoring & Observability
 
-The next stage of the HomeLab focuses on developing practical Linux System Administration skills.
+The next stage will introduce centralized infrastructure monitoring.
 
-Planned areas include:
+The objective is to move from simply administering systems to being able to proactively identify performance issues, service failures and infrastructure problems.
 
-* Linux server deployment
-* Ubuntu Server
-* Debian
-* Users and groups
-* File permissions
-* sudo
-* Package management
-* Linux networking
-* SSH
-* Storage and filesystems
-* systemd and services
-* Scheduled tasks
-* Logging
-* Firewall configuration
-* Security hardening
-* Samba
-* Bash scripting
-* Linux troubleshooting
-* Active Directory integration
+### Planned Monitoring
 
-This Linux environment will eventually integrate with the existing Windows, pfSense, and Proxmox infrastructure.
+- Proxmox host and VM health
+- Windows Server monitoring
+- Linux server monitoring
+- pfSense monitoring
+- CPU, memory, disk and network utilization
+- Service availability
+- Active Directory service health
+- Dashboards
+- Warning and critical thresholds
+- Alerting
+- Failure simulation
+- Monitoring-based troubleshooting
+
+This will create the monitoring foundation for later Docker, storage and security projects..
 
 ---
 
 # 🗺️ Future Roadmap
 
-After Linux Administration, the HomeLab will continue expanding into:
-
-| Stage | Project                    | Status      |
-| ----- | -------------------------- | ----------- |
-| 01    | Proxmox Virtualization     | ✅ Completed |
-| 02    | pfSense Firewall           | ✅ Completed |
-| 03    | Windows Server 2025        | ✅ Completed |
-| 04    | Active Directory           | ✅ Completed |
-| 05    | Linux Administration       | 🚧 In Progress     |
-| 06    | Docker & Containers        | 🔜 Planned  |
-| 07    | Storage & File Services    | 🔜 Planned  |
-| 08    | Monitoring & Observability | 🔜 Planned  |
-| 09    | Security & SIEM            | 🔜 Planned  |
-| 10    | Automation & Scripting     | 🔜 Planned  |
-| 11    | Backup & Disaster Recovery | 🔜 Planned  |
-| 12    | Advanced Networking & VPN  | 🔜 Planned  |
+| Stage | Project | Status |
+|---|---|---|
+| 01 | Proxmox Virtualization | ✅ Completed |
+| 02 | pfSense Firewall & Networking | ✅ Completed |
+| 03 | Windows Server 2025 | ✅ Completed |
+| 04 | Active Directory | ✅ Completed |
+| 05 | Linux Administration | ✅ Completed |
+| **06** | **Monitoring & Observability** | 🔜 **In Progress** |
+| 07 | Docker & Containers | 📋 Planned |
+| 08 | Storage & File Services | 📋 Planned |
+| 09 | Security & SIEM | 📋 Planned |
+| 10 | Automation & Scripting | 📋 Planned |
+| 11 | Backup & Disaster Recovery | 📋 Planned |
+| 12 | Advanced Networking | 📋 Planned |
 
 The roadmap may evolve as new technologies and infrastructure requirements are introduced.
 
@@ -264,13 +288,16 @@ The objective is to understand how different infrastructure technologies work **
 
 This project provides hands-on experience with:
 
-| Area           | Technologies                                           |
-| -------------- | ------------------------------------------------------ |
-| Virtualization | Proxmox VE, VMs, Linux Bridges, storage                |
-| Windows        | Windows Server 2025, Windows 11, AD DS, DNS, DHCP, GPO |
-| Networking     | pfSense, NAT, WireGuard, DNS, firewall rules           |
-| Security       | LAPS, BitLocker, Sysmon, WEF, Windows Firewall         |
-| Automation     | PowerShell, Bash *(expanding)*                         |
+| Area | Technologies |
+|---|---|
+| **Virtualization** | Proxmox VE • VMs • Linux Bridges |
+| **Windows Infrastructure** | Windows Server 2025 • Windows 11 • AD DS • DNS • DHCP • GPO |
+| **Linux** | Ubuntu • SSH • systemd • LVM • UFW • Samba • Bash |
+| **Networking** | pfSense • NAT • DNS • DDNS • WireGuard |
+| **Security** | LAPS • BitLocker • Defender • Windows Firewall • SSH Hardening |
+| **Identity** | Active Directory • SSSD • Kerberos • AD Groups |
+| **Monitoring** | Sysmon • Windows Event Forwarding |
+| **Automation** | PowerShell • Bash • Cron |
 
 ---
 
@@ -281,21 +308,17 @@ enterprise-homelab/
 │
 ├── README.md
 │
-├── 01-proxmox/                    ✅
-├── 02-pfsense/                    ✅
-├── 03-windows-server-2025/        ✅
-├── 04-active-directory/           ✅
+├── 01-proxmox/
+├── 02-pfsense/
+├── 03-windows-server-2025/
+├── 04-active-directory/
+├── 05-Linux Administration/
 │
-├── 05-linux-administration/       🚧
-├── 06-docker-containers/          🔜
-├── 07-storage-file-services/      🔜
-├── 08-monitoring-observability/   🔜
-├── 09-security-siem/              🔜
-├── 10-automation-scripting/       🔜
-├── 11-backup-disaster-recovery/   🔜
-└── 12-advanced-networking/        🔜
+└── docs/
+    └── architecture/
+        └── enterprise-homelab-current-architecture.png
 ```
-
+Future project folders will be added as each new stage begins.
 ---
 
 # 🔐 Security Notice
@@ -305,33 +328,6 @@ This repository is intended for educational and portfolio purposes.
 Sensitive information such as passwords, private keys, VPN credentials, recovery keys, certificates, tokens and administrative credentials is excluded or replaced with placeholders.
 
 Internal addresses and hostnames shown in the documentation belong only to the isolated HomeLab environment.
-
----
-
-# 🚀 Project Status
-
-> **🟢 Active — Continuously Developing**
-
-### Completed
-
-✅ Proxmox Virtualization
-✅ pfSense Firewall
-✅ Windows Server 2025
-✅ Active Directory
-
-### Current Focus
-
-🚧 **Linux Administration**
-
-### Coming Next
-
-🐳 Docker & Containers
-💾 Storage & File Services
-📊 Monitoring & Observability
-🛡️ Security & SIEM
-⚙️ Automation & Scripting
-♻️ Backup & Disaster Recovery
-🌐 Advanced Networking
 
 ---
 
