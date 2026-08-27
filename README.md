@@ -73,7 +73,7 @@ My lab currently uses:
 
 The diagram below represents the current architecture of my Enterprise HomeLab, including Proxmox VE, pfSense, Windows Server 2025, Active Directory services, WireGuard VPN, DDNS, security controls, monitoring, and backup components.
 
-![Enterprise HomeLab Current Architecture](docs/architecture/enterprise-homelab-current-architecture.png)
+![Enterprise HomeLab Current Architecture](docs/architecture/updated_enterprise-homelab-current-architecture.png)
 
 ---
 
