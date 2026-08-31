@@ -202,30 +202,65 @@ Deployed an Ubuntu Linux system and integrated it into the existing Windows-base
 
 ---
 
-# 🚧 What I'm Working On Now
+## 📊 06 — Monitoring & Observability ✅
 
-## 06 — Monitoring & Observability
+Implemented a centralized monitoring and alerting platform for the Enterprise HomeLab using **Prometheus, Grafana, exporters, and Alertmanager**.
 
-The next stage will introduce centralized infrastructure monitoring.
+### Implemented
 
-The objective is to move from simply administering systems to being able to proactively identify performance issues, service failures and infrastructure problems.
-
-### Planned Monitoring
-
-- Proxmox host and VM health
-- Windows Server monitoring
-- Linux server monitoring
-- pfSense monitoring
-- CPU, memory, disk and network utilization
-- Service availability
-- Active Directory service health
-- Dashboards
-- Warning and critical thresholds
-- Alerting
-- Failure simulation
+- Dedicated monitoring server — `MONITOR-SRV01`
+- Prometheus metrics collection
+- Grafana visualization and dashboards
+- Linux monitoring with Node Exporter
+- Windows monitoring with Windows Exporter
+- Proxmox VE monitoring
+- pfSense firewall monitoring
+- CPU, memory, disk, network, and uptime monitoring
+- 17 Prometheus alert rules
+- Infrastructure availability alerts
+- Resource utilization alerts
+- Alertmanager integration
+- Email alert notifications
+- Controlled infrastructure failure simulation
+- Alert firing validation
+- Service recovery validation
 - Monitoring-based troubleshooting
 
-This will create the monitoring foundation for later Docker, storage and security projects..
+**Key outcome:** The HomeLab can now centrally monitor infrastructure health, proactively detect failures, trigger alerts, and deliver administrator notifications.
+
+➡️ [View Monitoring & Observability Documentation](06-monitoring-observability/README.md)
+
+---
+
+# 🚧 What I'm Working On Now
+
+## 07 — Docker & Containers
+
+With centralized monitoring and alerting now implemented, the next stage of the Enterprise HomeLab will focus on **containerization using Docker**.
+
+The objective is to understand how modern applications and services can be deployed, isolated, managed, networked, monitored, and maintained using containers.
+
+### Planned Docker Lab
+
+- Install Docker Engine on Linux
+- Understand images, containers, registries, and volumes
+- Deploy and manage containers
+- Configure Docker networking
+- Configure persistent storage using Docker volumes
+- Build custom Docker images using Dockerfiles
+- Deploy multi-container applications
+- Introduce Docker Compose
+- Configure container restart policies
+- Practice container troubleshooting
+- Apply basic container security
+- Integrate Docker workloads with the existing monitoring platform
+- Document deployment and recovery procedures
+
+### Enterprise Goal
+
+Docker will introduce a modern application deployment layer to the HomeLab and provide a foundation for future containerized services and automation.
+
+The existing Prometheus and Grafana monitoring platform can later be extended to provide visibility into container workloads.
 
 ---
 
@@ -238,8 +273,8 @@ This will create the monitoring foundation for later Docker, storage and securit
 | 03 | Windows Server 2025 | ✅ Completed |
 | 04 | Active Directory | ✅ Completed |
 | 05 | Linux Administration | ✅ Completed |
-| **06** | **Monitoring & Observability** | 🔜 **In Progress** |
-| 07 | Docker & Containers | 📋 Planned |
+| 06 | Monitoring & Observability | ✅ Completed |
+| 07 | Docker & Containers | 🔜 Next |
 | 08 | Storage & File Services | 📋 Planned |
 | 09 | Security & SIEM | 📋 Planned |
 | 10 | Automation & Scripting | 📋 Planned |
@@ -284,9 +319,9 @@ The objective is to understand how different infrastructure technologies work **
 
 ---
 
-# 🛠️ Skills Being Developed
+# 🛠️ Skills & Technologies
 
-This project provides hands-on experience with:
+Hands-on experience developed through the Enterprise HomeLab:
 
 | Area | Technologies |
 |---|---|
@@ -296,8 +331,9 @@ This project provides hands-on experience with:
 | **Networking** | pfSense • NAT • DNS • DDNS • WireGuard |
 | **Security** | LAPS • BitLocker • Defender • Windows Firewall • SSH Hardening |
 | **Identity** | Active Directory • SSSD • Kerberos • AD Groups |
-| **Monitoring** | Sysmon • Windows Event Forwarding |
+| **Monitoring** | Prometheus • Grafana • Alertmanager • Node Exporter • Windows Exporter |
 | **Automation** | PowerShell • Bash • Cron |
+| **Next: Containers** | Docker • Docker Compose • Containers |
 
 ---
 
@@ -305,18 +341,17 @@ This project provides hands-on experience with:
 
 ```text
 enterprise-homelab/
-│
 ├── README.md
-│
 ├── 01-proxmox/
 ├── 02-pfsense/
 ├── 03-windows-server-2025/
 ├── 04-active-directory/
 ├── 05-Linux Administration/
-│
+├── 06-monitoring-observability/
+│   ├── README.md
+│   └── images/
 └── docs/
     └── architecture/
-        └── enterprise-homelab-current-architecture.png
 ```
 Future project folders will be added as each new stage begins.
 ---
