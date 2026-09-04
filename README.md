@@ -1,162 +1,231 @@
-# 🏠 Enterprise HomeLab
+# 🏠 Enterprise Infrastructure HomeLab
 
-> A hands-on enterprise-style HomeLab built to develop practical skills in IT infrastructure, virtualization, networking, security, Linux, monitoring, and automation.
+> **A complete hands-on enterprise-style IT infrastructure lab — built, configured, secured, tested, monitored, troubleshot, recovered, and documented step-by-step.**
 
----
+This repository documents the complete journey of building an **enterprise-style IT infrastructure HomeLab from the ground up**.
 
-## 👋 About This Project
-
-This repository documents my personal Enterprise HomeLab, built for hands-on learning, experimentation, troubleshooting, and infrastructure development.
-
-Rather than simply installing technologies, I use the environment to deploy services, apply security controls, test configurations, troubleshoot failures, perform recovery exercises, automate administrative tasks, and document what I learn.
+The environment combines virtualization, networking, Windows Server, Active Directory, Linux, security, VPN, monitoring, logging, alerting, automation, and eventually containerized services into one connected infrastructure.
 
 The goal is not simply to install different technologies.
 
-I use this environment to:
-
-* Deploy infrastructure
-* Configure enterprise services
-* Apply security controls
-* Test configurations
-* Troubleshoot problems
-* Simulate failures
-* Recover systems
-* Automate administrative tasks
-* Document everything I learn
-
-The HomeLab is continuously expanding as I develop my skills across **Windows, Linux, networking, virtualization, security, monitoring, storage, and automation**.
+The goal is to understand **how they work together, how to configure them correctly, how to test them, and most importantly — how to troubleshoot them when something goes wrong.**
 
 ---
 
-# 🎯 My Goal
+# 🎯 Who Is This HomeLab For?
 
-My goal is to build a small but realistic enterprise-style infrastructure where I can develop practical skills across systems, networking, security, virtualization, automation, and infrastructure operations.
+If you are **new to IT**, studying System Administration, Networking, Infrastructure, or Security, and want real hands-on experience, you can follow this repository **from Stage 01 onward** and build your own environment.
 
-The learning process follows:
+Each stage explains not only **what to configure**, but also:
+
+* 📖 What the technology is
+* 🏢 Why it is used in enterprise environments
+* 🛠️ How to install and configure it
+* 💻 Commands used during configuration
+* 🧠 What important commands actually do
+* 📸 Screenshots from the real lab
+* 🧪 How to test and validate the configuration
+* ⚠️ Problems encountered during implementation
+* 🔍 Troubleshooting and investigation steps
+* ✅ How the problem was resolved
+* 💡 What was learned from the issue
+* 🏢 Practical enterprise use cases
+
+You do not have to build the complete lab either.
+
+If you are searching for a solution to a particular **Proxmox, pfSense, Windows Server, Active Directory, Linux, VPN, DNS, monitoring, or infrastructure problem**, check the relevant stage and its troubleshooting section to see whether I encountered and solved a similar issue.
+
+---
+
+# 🧭 How This Project Works
+
+The HomeLab follows a practical infrastructure learning cycle:
 
 ```text
-Plan
-  ↓
-Deploy
-  ↓
-Configure
-  ↓
-Secure
-  ↓
-Test
-  ↓
-Troubleshoot
-  ↓
-Recover
-  ↓
-Document
-  ↓
-Improve
+                    PLAN
+                      │
+                      ▼
+                   DEPLOY
+                      │
+                      ▼
+                  CONFIGURE
+                      │
+                      ▼
+                    SECURE
+                      │
+                      ▼
+                     TEST
+                      │
+                      ▼
+                TROUBLESHOOT
+                      │
+                      ▼
+                   RECOVER
+                      │
+                      ▼
+                  DOCUMENT
+                      │
+                      ▼
+                   IMPROVE
 ```
 
-Troubleshooting and recovery are intentionally documented because diagnosing failures is a key part of infrastructure administration.
+A successful installation is only part of infrastructure administration.
+
+Understanding **why something failed, finding the root cause, fixing it, and verifying the solution** is just as important.
+
+For this reason, troubleshooting is intentionally included throughout this repository.
 
 ---
 
-# 🖥️ HomeLab Infrastructure
+# 🏗️ Current HomeLab Architecture
 
-My lab currently uses:
+The HomeLab is designed as a small enterprise-style infrastructure environment.
 
-| Hardware               | Purpose                               |
-| ---------------------- | ------------------------------------- |
-| Lenovo M720t           | Primary Proxmox virtualization server |
-| Lenovo M910q x 2       | Available for multi-node / cluster expansion               |
-| Managed Switch         | Network connectivity                  |
-| Additional HDD Storage | Backup and storage                    |
-
-## 🏗️ Current Architecture
-
-The diagram below represents the current architecture of my Enterprise HomeLab, including Proxmox VE, pfSense, Windows Server 2025, Active Directory services, WireGuard VPN, DDNS, security controls, monitoring, and backup components.
-
-![Enterprise HomeLab Current Architecture](docs/architecture/updated_enterprise-homelab-current-architecture.png)
+![Enterprise HomeLab Current Architecture](docs/architecture/updated_enterprise-homelab-architecture.gif)
 
 ---
 
-# 📚 Project Documentation
+# 🖥️ HomeLab Hardware
 
-The repository is organized by **major infrastructure technologies**.
-
-Detailed installation steps, configuration, commands, screenshots, testing, troubleshooting, and lessons learned are stored inside each project folder.
+| Hardware                   | Purpose                                             |
+| -------------------------- | --------------------------------------------------- |
+| **Lenovo M720t**           | Primary Proxmox VE virtualization server            |
+| **Lenovo M910q Mini PCs**  | Available for future multi-node / cluster expansion |
+| **Managed Network Switch** | Physical network connectivity                       |
+| **Lenovo T490**            | Administrative / client system                      |
+| **Additional Storage**     | VM backup and infrastructure storage                |
 
 ---
 
-## 01 — Proxmox Virtualization ✅
+# 🌐 Core Infrastructure
 
-Built the virtualization platform used to host the HomeLab infrastructure.
+The environment currently combines:
 
-Covered:
+| Area               | Technologies                                                   |
+| ------------------ | -------------------------------------------------------------- |
+| **Virtualization** | Proxmox VE • Virtual Machines • Linux Bridges                  |
+| **Networking**     | pfSense • LAN/WAN • NAT • DNS • DDNS                           |
+| **Remote Access**  | WireGuard VPN                                                  |
+| **Windows**        | Windows Server 2025 • Windows 11                               |
+| **Identity**       | Active Directory • AD Groups • SSSD • Kerberos                 |
+| **Core Services**  | DNS • DHCP • Group Policy                                      |
+| **Linux**          | Ubuntu • SSH • systemd • LVM • UFW • Samba                     |
+| **Security**       | LAPS • BitLocker • Defender • Windows Firewall • SSH Hardening |
+| **Monitoring**     | Prometheus • Grafana • Alertmanager                            |
+| **Metrics**        | Node Exporter • Windows Exporter • Blackbox Exporter           |
+| **Logging**        | Loki • Promtail • Windows Event Forwarding • Sysmon            |
+| **Automation**     | PowerShell • Bash • Cron                                       |
+| **Next Layer**     | Docker • Docker Compose • Containers                           |
+
+---
+
+# 📚 Build the HomeLab Step-by-Step
+
+The project is divided into stages so the environment can be built progressively.
+
+| Stage  | Project                          | Status      |
+| ------ | -------------------------------- | ----------- |
+| **01** | 🖥️ Proxmox Virtualization       | ✅ Completed |
+| **02** | 🔥 pfSense Firewall & Networking | ✅ Completed |
+| **03** | 🪟 Windows Server 2025           | ✅ Completed |
+| **04** | 👥 Active Directory              | ✅ Completed |
+| **05** | 🐧 Linux Administration          | ✅ Completed |
+| **06** | 📊 Monitoring & Observability    | ✅ Completed |
+| **07** | 🐳 Docker & Containers           | 🔜 Next     |
+| **08** | 💾 Storage & File Services       | 📋 Planned  |
+| **09** | 🛡️ Security & SIEM              | 📋 Planned  |
+| **10** | ⚙️ Automation & Scripting        | 📋 Planned  |
+| **11** | ♻️ Backup & Disaster Recovery    | 📋 Planned  |
+| **12** | 🌐 Advanced Networking           | 📋 Planned  |
+
+---
+
+# 01 — 🖥️ Proxmox Virtualization
+
+The first stage builds the virtualization foundation used to host the rest of the infrastructure.
+
+### Covered
 
 * Proxmox VE installation
+* Host configuration
 * Virtual machines
 * Virtual networking
 * Linux bridges
-* Storage
+* VM storage
 * Backup storage
 * VM management
-* Troubleshooting
+* Network troubleshooting
 
-➡️ **[View Proxmox Documentation](./01-proxmox/)**
+📂 **Documentation:** [`01-proxmox/`](01-proxmox/)
 
 ---
 
-## 02 — pfSense Firewall ✅
+# 02 — 🔥 pfSense Firewall & Networking
 
-Deployed pfSense to provide firewalling, networking, and secure remote access for the HomeLab.
+pfSense provides routing, firewalling, network control, DNS services, and secure remote access to the HomeLab.
 
-Covered:
+### Covered
 
-* WAN/LAN configuration
+* pfSense deployment
+* WAN and LAN interfaces
 * Firewall rules
-* NAT
 * Network aliases
+* NAT / Port Forwarding
 * DNS
 * Dynamic DNS
+* No-IP DDNS
 * WireGuard VPN
-* Secure remote access
-* Firewall troubleshooting
+* Remote HomeLab access
+* Internal DNS over VPN
+* Firewall testing
+* Network troubleshooting
 
-➡️ **[View pfSense Documentation](./02-pfsense/)**
-
----
-
-## 03 — Windows Server 2025 ✅
-
-Deployed Windows Server 2025 and configured the main Windows infrastructure services used throughout the lab.
-
-Covered:
-
-- Windows Server 2025 deployment
-- DNS and DHCP
-- Group Policy
-- Active Directory Certificate Services
-- Microsoft LAPS
-- BitLocker and Windows security policies
-- Sysmon and Windows Event Forwarding
-- Windows Server Backup
-- Remote administration
-- Troubleshooting and recovery
-
-➡️ **[View Windows Server 2025 Documentation](./03-windows-server-2025/)**
+📂 **Documentation:** [`02-pfsense/`](02-pfsense/)
 
 ---
 
-## 04 — Active Directory ✅
+# 03 — 🪟 Windows Server 2025
 
-Built an enterprise-style Active Directory environment for centralized identity and access management.
+Windows Server provides the main Microsoft infrastructure services used throughout the environment.
 
-Covered:
+### Covered
+
+* Windows Server 2025 deployment
+* Server networking
+* DNS
+* DHCP
+* Group Policy
+* Active Directory Certificate Services
+* WinRM / remote administration
+* Microsoft LAPS
+* BitLocker policies
+* Microsoft Defender
+* Windows Firewall policies
+* Sysmon
+* Windows Event Forwarding
+* Windows Server Backup
+* Backup testing
+* Restore and recovery
+* Troubleshooting
+
+📂 **Documentation:** [`03-windows-server-2025/`](03-windows-server-2025/)
+
+---
+
+# 04 — 👥 Active Directory
+
+An enterprise-style Active Directory environment provides centralized identity, authentication, authorization, and policy management.
+
+### Covered
 
 * Active Directory Domain Services
-* Organizational Units
-* Users and groups
-* AGDLP
+* Domain configuration
+* Organizational Unit design
+* Users and security groups
 * Administrative accounts
+* AGDLP
 * Delegation
+* Group Policy
 * Password policies
 * Fine-Grained Password Policies
 * Active Directory Sites & Services
@@ -165,175 +234,243 @@ Covered:
 * Active Directory Recycle Bin
 * gMSA
 * PowerShell administration
+* Windows 11 domain joining
 * Troubleshooting
 
-➡️ **[View Active Directory Documentation](./04-active-directory/)**
+📂 **Documentation:** [`04-active-directory/`](04-active-directory/)
 
 ---
 
-## 🐧 05 — Linux Administration ✅
+# 05 — 🐧 Linux Administration
 
-Deployed an Ubuntu Linux system and integrated it into the existing Windows-based HomeLab infrastructure.
+Ubuntu Linux was introduced into the Windows-based infrastructure and integrated with Active Directory.
 
-### Implemented
+### Covered
 
-- Linux networking and internal DNS
-- Users, groups and filesystem permissions
-- sudo and least-privilege administration
-- APT package management
-- systemd service management
-- SSH remote administration
-- Ed25519 key-based authentication
-- SSH security hardening
-- LVM storage administration
-- Linux logging with journalctl
-- Bash scripting and cron automation
-- UFW host firewall
-- Samba / SMB file sharing
-- Windows-to-Linux interoperability
-- Active Directory domain integration
-- SSSD and Kerberos authentication
-- AD group-based Linux login
-- AD-controlled sudo authorization
+* Linux installation
+* Static networking
+* Internal DNS
+* Users and groups
+* File and directory permissions
+* sudo / least privilege
+* APT package management
+* systemd
+* SSH administration
+* Ed25519 key authentication
+* SSH hardening
+* LVM storage
+* Linux logging
+* `journalctl`
+* Bash scripting
+* Cron automation
+* UFW firewall
+* Samba / SMB
+* Windows ↔ Linux interoperability
+* Active Directory integration
+* SSSD
+* Kerberos
+* AD-based Linux authentication
+* AD security group login control
+* AD-controlled sudo permissions
+* Troubleshooting
 
-**Key outcome:** Linux authentication and administrative access can be centrally controlled through Active Directory security groups.
+### Key Outcome
 
-➡️ [View Linux Administration Documentation](05-Linux%20Administration/README.md)
+Linux authentication and administrative access can be centrally controlled using Active Directory security groups.
 
----
-
-## 📊 06 — Monitoring & Observability ✅
-
-Implemented a centralized monitoring and alerting platform for the Enterprise HomeLab using **Prometheus, Grafana, exporters, and Alertmanager**.
-
-### Implemented
-
-- Dedicated monitoring server — `MONITOR-SRV01`
-- Prometheus metrics collection
-- Grafana visualization and dashboards
-- Linux monitoring with Node Exporter
-- Windows monitoring with Windows Exporter
-- Proxmox VE monitoring
-- pfSense firewall monitoring
-- CPU, memory, disk, network, and uptime monitoring
-- 17 Prometheus alert rules
-- Infrastructure availability alerts
-- Resource utilization alerts
-- Alertmanager integration
-- Email alert notifications
-- Controlled infrastructure failure simulation
-- Alert firing validation
-- Service recovery validation
-- Monitoring-based troubleshooting
-
-**Key outcome:** The HomeLab can now centrally monitor infrastructure health, proactively detect failures, trigger alerts, and deliver administrator notifications.
-
-➡️ [View Monitoring & Observability Documentation](06-monitoring-observability/README.md)
+📂 **Documentation:** [`05-Linux Administration/`](05-Linux%20Administration/)
 
 ---
 
-# 🚧 What I'm Working On Now
+# 06 — 📊 Monitoring & Observability
 
-## 07 — Docker & Containers
+A centralized monitoring platform provides visibility into the health and availability of the infrastructure.
 
-With centralized monitoring and alerting now implemented, the next stage of the Enterprise HomeLab will focus on **containerization using Docker**.
-
-The objective is to understand how modern applications and services can be deployed, isolated, managed, networked, monitored, and maintained using containers.
-
-### Planned Docker Lab
-
-- Install Docker Engine on Linux
-- Understand images, containers, registries, and volumes
-- Deploy and manage containers
-- Configure Docker networking
-- Configure persistent storage using Docker volumes
-- Build custom Docker images using Dockerfiles
-- Deploy multi-container applications
-- Introduce Docker Compose
-- Configure container restart policies
-- Practice container troubleshooting
-- Apply basic container security
-- Integrate Docker workloads with the existing monitoring platform
-- Document deployment and recovery procedures
-
-### Enterprise Goal
-
-Docker will introduce a modern application deployment layer to the HomeLab and provide a foundation for future containerized services and automation.
-
-The existing Prometheus and Grafana monitoring platform can later be extended to provide visibility into container workloads.
-
----
-
-# 🗺️ Future Roadmap
-
-| Stage | Project | Status |
-|---|---|---|
-| 01 | Proxmox Virtualization | ✅ Completed |
-| 02 | pfSense Firewall & Networking | ✅ Completed |
-| 03 | Windows Server 2025 | ✅ Completed |
-| 04 | Active Directory | ✅ Completed |
-| 05 | Linux Administration | ✅ Completed |
-| 06 | Monitoring & Observability | ✅ Completed |
-| 07 | Docker & Containers | 🔜 Next |
-| 08 | Storage & File Services | 📋 Planned |
-| 09 | Security & SIEM | 📋 Planned |
-| 10 | Automation & Scripting | 📋 Planned |
-| 11 | Backup & Disaster Recovery | 📋 Planned |
-| 12 | Advanced Networking | 📋 Planned |
-
-The roadmap may evolve as new technologies and infrastructure requirements are introduced.
-
----
-
-# 🔮 Where This Lab Is Going
-
-The long-term goal is to connect the individual projects into a more complete enterprise-style environment.
-
-For example:
+### Monitoring Stack
 
 ```text
-                    Proxmox Infrastructure
-                            │
-             ┌──────────────┼──────────────┐
-             │              │              │
-          Windows          Linux        Containers
-             │              │              │
-      Active Directory      │            Docker
-             │              │              │
-             └──────────────┼──────────────┘
-                            │
-                     pfSense Network
-                            │
-             ┌──────────────┼──────────────┐
-             │              │              │
-          Storage       Monitoring       Security
-             │              │              │
-            NAS          Dashboards       SIEM
-                            │
-                         Logging
-                            │
-                        Automation
+Infrastructure
+      │
+      ├── Proxmox
+      ├── pfSense
+      ├── Windows Server
+      ├── Windows 11
+      └── Linux
+             │
+             ▼
+         Exporters
+             │
+             ▼
+        Prometheus
+             │
+       ┌─────┴─────┐
+       │           │
+    Grafana    Alertmanager
+       │           │
+  Dashboards     Alerts
 ```
 
-The objective is to understand how different infrastructure technologies work **together**, rather than learning each technology in isolation.
+### Covered
+
+* Dedicated monitoring server
+* Prometheus
+* Grafana
+* Alertmanager
+* Node Exporter
+* Windows Exporter
+* Blackbox Exporter
+* Proxmox monitoring
+* pfSense monitoring
+* Windows monitoring
+* Linux monitoring
+* CPU monitoring
+* Memory monitoring
+* Disk monitoring
+* Network monitoring
+* Infrastructure availability
+* Prometheus alert rules
+* Email notifications
+* Loki
+* Promtail
+* Centralized log visibility
+* Controlled failure testing
+* Alert validation
+* Recovery validation
+* Monitoring troubleshooting
+
+### Key Outcome
+
+The infrastructure can now be centrally monitored to detect service failures and resource problems instead of relying only on manual checks.
+
+📂 **Documentation:** [`06-monitoring-observability/`](06-monitoring-observability/)
 
 ---
 
-# 🛠️ Skills & Technologies
+# 🔍 Real Troubleshooting — Not Just Successful Configurations
 
-Hands-on experience developed through the Enterprise HomeLab:
+One of the most important parts of this project is documenting **what did not work**.
 
-| Area | Technologies |
-|---|---|
-| **Virtualization** | Proxmox VE • VMs • Linux Bridges |
-| **Windows Infrastructure** | Windows Server 2025 • Windows 11 • AD DS • DNS • DHCP • GPO |
-| **Linux** | Ubuntu • SSH • systemd • LVM • UFW • Samba • Bash |
-| **Networking** | pfSense • NAT • DNS • DDNS • WireGuard |
-| **Security** | LAPS • BitLocker • Defender • Windows Firewall • SSH Hardening |
-| **Identity** | Active Directory • SSSD • Kerberos • AD Groups |
-| **Monitoring** | Prometheus • Grafana • Alertmanager • Node Exporter • Windows Exporter |
-| **Automation** | PowerShell • Bash • Cron |
-| **Next: Containers** | Docker • Docker Compose • Containers |
+Real infrastructure rarely works perfectly on the first attempt.
+
+Problems encountered during the HomeLab build are converted into structured troubleshooting cases:
+
+```text
+Problem
+   ↓
+Symptoms
+   ↓
+Investigation
+   ↓
+Root Cause
+   ↓
+Solution
+   ↓
+Verification
+   ↓
+Lesson Learned
+```
+
+Examples of issues investigated during this project include:
+
+* Proxmox network bridge configuration
+* pfSense WAN addressing / interface problems
+* Firewall rule behavior
+* NAT configuration
+* Internal DNS resolution
+* DNS resolution through WireGuard
+* Windows Certificate Authority connectivity
+* Windows Event Forwarding receiving no events
+* Linux DNS configuration
+* Linux time synchronization
+* SSH authentication and hardening
+* Linux Active Directory integration
+* Windows/Linux authentication
+* Monitoring target connectivity
+* Exporter configuration
+* Telegraf service problems
+* Grafana dashboard configuration
+* Prometheus alert configuration
+* Alertmanager testing
+* Infrastructure failure and recovery validation
+
+These troubleshooting sections can also be used independently.
+
+If you encounter a similar problem, navigate directly to the related technology and check the troubleshooting documentation.
+
+---
+
+# 🧪 Testing & Validation
+
+Configurations are not considered complete simply because they were installed.
+
+Where applicable, each stage includes validation such as:
+
+* Connectivity testing
+* DNS resolution
+* Authentication testing
+* Permission validation
+* Firewall testing
+* VPN connectivity
+* Remote administration
+* Group Policy verification
+* Backup and restore testing
+* Monitoring target validation
+* Alert simulation
+* Service failure simulation
+* Recovery verification
+
+This helps confirm that the configuration actually works as intended.
+
+---
+
+# 🔐 Security Approach
+
+Security controls are introduced throughout the environment rather than treated as a single separate task.
+
+Examples include:
+
+* pfSense firewall policies
+* Network segmentation concepts
+* WireGuard remote access
+* Active Directory security groups
+* Least-privilege administration
+* Group Policy
+* Microsoft LAPS
+* BitLocker policies
+* Microsoft Defender
+* Windows Firewall
+* SSH key authentication
+* Disabled SSH root login
+* Disabled SSH password authentication
+* UFW
+* AD-controlled Linux access
+* Logging and monitoring
+
+---
+
+# 🚧 Current Stage
+
+## 07 — 🐳 Docker & Containers
+
+The next stage introduces containerized workloads into the existing infrastructure.
+
+Planned topics include:
+
+* Docker Engine
+* Images and containers
+* Registries
+* Docker networking
+* Persistent volumes
+* Dockerfiles
+* Custom images
+* Docker Compose
+* Multi-container applications
+* Restart policies
+* Container security
+* Container troubleshooting
+* Monitoring Docker workloads using the existing Prometheus and Grafana platform
+
+This will introduce a modern application deployment layer while continuing to use the networking, identity, security, and monitoring foundations already built.
 
 ---
 
@@ -341,28 +478,58 @@ Hands-on experience developed through the Enterprise HomeLab:
 
 ```text
 enterprise-homelab/
+│
 ├── README.md
+│
 ├── 01-proxmox/
+│
 ├── 02-pfsense/
+│
 ├── 03-windows-server-2025/
+│
 ├── 04-active-directory/
+│
 ├── 05-Linux Administration/
+│
 ├── 06-monitoring-observability/
-│   ├── README.md
-│   └── images/
+│
 └── docs/
     └── architecture/
 ```
-Future project folders will be added as each new stage begins.
+
+As the HomeLab grows, additional stages and troubleshooting documentation will be added.
+
 ---
 
 # 🔐 Security Notice
 
-This repository is intended for educational and portfolio purposes.
+This repository documents a **controlled HomeLab environment**.
 
-Sensitive information such as passwords, private keys, VPN credentials, recovery keys, certificates, tokens and administrative credentials is excluded or replaced with placeholders.
+Sensitive information is not published.
 
-Internal addresses and hostnames shown in the documentation belong only to the isolated HomeLab environment.
+Passwords, private keys, VPN credentials, recovery keys, tokens, certificates, and other sensitive administrative information are removed, masked, or replaced with example values.
+
+IP addresses and hostnames shown throughout the documentation relate to the isolated lab environment.
+
+---
+
+# 🤝 Using This Repository
+
+There are two ways to use this project.
+
+### 🏗️ Build From Scratch
+
+Start with **Stage 01 — Proxmox** and continue through each stage.
+
+This allows you to progressively build virtualization, networking, Windows infrastructure, identity, Linux, security, monitoring, and eventually container services.
+
+### 🔎 Find a Solution
+
+Already have your own environment?
+
+Navigate directly to the relevant technology or troubleshooting section.
+
+You may find the commands, investigation process, root cause, or solution useful when diagnosing a similar issue.
 
 ---
 
@@ -370,8 +537,10 @@ Internal addresses and hostnames shown in the documentation belong only to the i
 
 **Mohamed Afham**
 
-This repository documents my ongoing hands-on infrastructure learning and HomeLab development.
+This repository documents my ongoing hands-on journey of building, testing, troubleshooting, securing, monitoring, and improving an enterprise-style IT infrastructure environment.
 
 ---
 
-> ### Build → Configure → Secure → Break → Troubleshoot → Recover → Automate → Document → Improve
+> ## 🧠 Learn → Build → Break → Troubleshoot → Fix → Understand → Improve
+>
+> **The objective is not only to make the technology work — it is to understand why it works and know what to do when it doesn't.**
